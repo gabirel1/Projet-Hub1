@@ -1,0 +1,165 @@
+#!/usr/bin/python3
+import sys
+import math
+
+def error(b) :
+    try :
+        b = int (b)
+    except :
+        sys.exit(84)
+    if (b != 1 and b != 2 and b != 3) :
+        sys.exit(84)
+
+class Vector() :
+    def norme(self, x, y, z) :
+        return(math.sqrt((math.pow(x, 2) + math.pow(y, 2) + math.pow(z, 2))))
+    def __init__(self, x1, y1, z1) :
+        self.x = float(x1)
+        self.y = float(y1)
+        self.z = float(z1)
+        self.norm = self.norme(self.x, self.y, self.z)
+
+def scarlar_product(A, B) :
+    return(float(A.x * B.x + A.y * B.y + A.z * B.z))
+
+def is_in(vector, point) :
+    a = (-1 * point.x) / vector.x
+    b = (-1 * point.y) / vector.y
+    c = (-1 * point.z) / vector.z
+    if (a == b and a == c) :
+        return True
+    return False
+
+def cone(point, vector, angle) :
+    alpha = float(angle) * math.pi
+    alpha = alpha / 180
+    axis = Vector(0, 0, 1)
+    product = scarlar_product(axis, vector)
+    test = product / (axis.norm * vector.norm)
+    a = math.pow(vector.x, 2) + math.pow(vector.y, 2) - (math.pow(vector.z, 2) * math.pow(math.tan(alpha), 2))
+    b = 2 * ((vector.x * point.x) + (vector.y * point.y) - (vector.z * point.z * math.pow(math.tan(alpha), 2)))
+    c = math.pow(point.x, 2) + math.pow(point.y, 2) - (math.pow(point.z, 2) * math.pow(math.tan(alpha), 2))
+    det = math.pow(b, 2) - (4 * a * c)
+    print("Cone with a %s degree angle"%(angle))
+    print("Line passing through the point (%d, %d, %d) and parallel to the vector (%d, %d, %d)"%(point.x, point.y, point.z, vector.x, vector.y, vector.z))
+    if (float(angle) <= 0) :
+        sys.exit(84)
+    if (float(angle)>= 90) :
+        sys.exit(84)
+    if (test == alpha and is_in(vector, point)) :
+        print("There is an infinite number of intersection points.")
+        exit(0)
+    if (det > 0) :
+        res1 = (-b + math.sqrt(det)) / (2 * a)
+        res2 = (-b - math.sqrt(det)) / (2 * a)
+        inter1 = Vector(point.x + vector.x * res1, point.y + vector.y * res1, point.z + vector.z * res1)
+        inter2 = Vector(point.x + vector.x * res2, point.y + vector.y * res2, point.z + vector.z * res2)
+        print("2 intersection points:")
+        print("(%.3f, %.3f, %.3f)"%(inter1.x, inter1.y, inter1.z))
+        print("(%.3f, %.3f, %.3f)"%(inter2.x, inter2.y, inter2.z))
+        return
+    elif (det == 0) :
+        res = (-b + math.sqrt(det)) / (2 * a)
+        inter = Vector(point.x + vector.x * res, point.y + vector.y * res, point.z + vector.z * res)
+        print("1 intersection point:")
+        print("(%.3f, %.3f, %.3f)"%(inter.x, inter.y, inter.z))
+    else :
+        print("No intersection point.")
+def cylinder(point, vector, radius) :
+    a = math.pow(vector.x, 2) + math.pow(vector.y, 2)
+    b = 2 * (point.x * vector.x + point.y * vector.y)
+    c = math.pow(point.x, 2) + math.pow(point.y, 2) - math.pow(int(radius), 2)
+    det = math.pow(b, 2) - (4 * a * c)
+    print("Cylinder of radius %s"%(radius))
+    print("Line passing through the point (%d, %d, %d) and parallel to the vector (%d, %d, %d)"%(point.x, point.y, point.z, vector.x, vector.y, vector.z))
+    if (int(radius) <= 0) :
+        sys.exit(84)
+    if (det == 0 and vector.x == 0 and vector.y == 0 and vector.z != 0) :
+        print("There is an infinite number of intersection points.")
+        exit(0)
+    if (det > 0) :
+        res1 = (-b + math.sqrt(det)) / (2 * a)
+        res2 = (-b - math.sqrt(det)) / (2 * a)
+        inter1 = Vector(point.x + vector.x * res1, point.y + vector.y * res1, point.z + vector.z * res1)
+        inter2 = Vector(point.x + vector.x * res2, point.y + vector.y * res2, point.z + vector.z * res2)
+        print("2 intersection points:")
+        print("(%.3f, %.3f, %.3f)"%(inter1.x, inter1.y, inter1.z))
+        print("(%.3f, %.3f, %.3f)"%(inter2.x, inter2.y, inter2.z))
+        return
+    elif (det == 0) :
+        res = (-b + math.sqrt(det)) / (2 * a)
+        inter = Vector(point.x + vector.x * res, point.y + vector.y * res, point.z + vector.z * res)
+        print("1 intersection point:")
+        print("(%.3f, %.3f, %.3f)"%(inter.x, inter.y, inter.z))
+    else :
+        print("No intersection point.")
+
+def circle(point, vector, radius) :
+    a = math.pow(vector.x, 2) + math.pow((vector.y), 2) + math.pow((vector.z), 2)
+    b = 2 * (vector.x * point.x + vector.y * point.y + vector.z * point.z)
+    c = math.pow(point.x, 2) + math.pow(point.y, 2) + math.pow(point.z, 2) - math.pow(float(radius), 2)
+    det = math.pow(b, 2) - (4 * a * c)
+    print("Sphere of radius %s"%(radius))
+    print("Line passing through the point (%d, %d, %d) and parallel to the vector (%d, %d, %d)"%(point.x, point.y, point.z, vector.x, vector.y, vector.z))
+    if (int(radius) <= 0) :
+        sys.exit(84)
+    if (det > 0) :
+        res1 = (-b + math.sqrt(det)) / (2 * a)
+        res2 = (-b - math.sqrt(det)) / (2 * a)
+        inter1 = Vector(point.x + vector.x * res1, point.y + vector.y * res1, point.z + vector.z * res1)
+        inter2 = Vector(point.x + vector.x * res2, point.y + vector.y * res2, point.z + vector.z * res2)
+        print("2 intersection points:")
+        print("(%.3f, %.3f, %.3f)"%(inter1.x, inter1.y, inter1.z))
+        print("(%.3f, %.3f, %.3f)"%(inter2.x, inter2.y, inter2.z))
+    elif (det == 0) :
+        res = (-b + math.sqrt(det)) / (2 * a)
+        inter = Vector(point.x + vector.x * res, point.y + vector.y * res, point.z + vector.z * res)
+        print("1 intersection point:")
+        print("(%.3f, %.3f, %.3f)"%(inter.x, inter.y, inter.z))
+    else :
+        print("No intersection point.")
+
+if __name__=='__main__':
+    a = len(sys.argv)
+    if (a >= 10) :
+        sys.exit(84)
+    if (a < 2 or a == 4) :
+        sys.exit(84)
+    if (a == 2 and sys.argv[1] == "-h") :
+        print("./104intersection -h")
+        print("USAGE")
+        print("\t./104intersection opt xp yp zp xv yv zv p\n")
+        print("DESCRIPTION")
+        print("\topt\t\t surface option: 1 for a sphere, 2 for a cylinder, 3 for a cone")
+        print("\t(xp, yp, zp)\t coordinates of a point by which the light ray passes through")
+        print("\t(xv, yv, zv)\t coordinates of a vector parallel to the light ray")
+        print("\tp parameter:\t radius of the sphere, radius of the cylinder, or angle formed by the cone and the Z-axis")
+    if (a > 4) :
+        error(sys.argv[1])
+        try :
+            float(sys.argv[2])
+            float(sys.argv[3])
+            float(sys.argv[4])
+            float(sys.argv[5])
+            float(sys.argv[6])
+            float(sys.argv[7])
+            float(sys.argv[8])
+        except :
+            print("Invalid arguments")
+            sys.exit(84)
+        point = Vector(sys.argv[2], sys.argv[3], sys.argv[4])
+        vector = Vector(sys.argv[5], sys.argv[6], sys.argv[7])
+        if (vector.x == 0 and vector.y == 0 and vector.z == 0) :
+            print("Invalid arguments")
+            sys.exit(84)
+        if (sys.argv[1] == '1') :
+            circle(point, vector, sys.argv[8])
+        if (sys.argv[1] == '2') :
+            cylinder(point, vector, sys.argv[8])
+        if (sys.argv[1] == '3') :
+            cone(point, vector, sys.argv[8])
+
+# cone radius != 0
+# sphere et cylinder > 0
+# si l'angle est égal a 360 ça écquivaut à un angle de 0 non ?
+# de meme pour tout les multiples de 360 j'imagine.

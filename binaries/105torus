@@ -1,0 +1,157 @@
+#!/usr/bin/python3
+# -*- coding: utf-8 -*-
+import sys
+import math
+
+class Polynom() :
+    def derivative(self) :
+        derivative = Polynom(self.a1, 2 * self.a2, 3 * self.a3, 4 * self.a4, 0)
+        return(derivative)
+    def solution(self, x) :
+        return(self.a4 * math.pow(x, 4) + self.a3 * math.pow(x, 3) + self.a2 * math.pow(x, 2) + self.a1 * x + self.a0)
+    def __init__(self, a0, a1, a2, a3, a4) :
+        self.a0 = float(a0)
+        self.a1 = float(a1)
+        self.a2 = float(a2)
+        self.a3 = float(a3)
+        self.a4 = float(a4)
+
+def error(a) :
+    try :
+        a = int(a)
+    except :
+        print("Bad arguments")
+        sys.exit(84)
+    if (a != 1 and a != 2 and a != 3) :
+        print("Argument 1 should stick between 1 to 3, no other digits are allowed")
+        sys.exit(84)
+
+def error2(a) :
+    try :
+        a = float(a)
+    except :
+        print("Bad arguments")
+        sys.exit(84)
+    if (a <= 0) :
+        print("Precision should have a positive value")
+        sys.exit(84)
+
+def get_str(m, n, last) :
+    number = str(round(m, n))
+    while (len(number) < len(str(last))) :
+        number += '0'
+    return number
+
+def get_str2(m, n, last) :
+    len_last = len(str(last))
+    if (last != 1 and len_last != n) :
+        while (len_last < n ) :
+            len_last += 1
+    number = str(round(m, n))
+    while (len(number) < len_last) :
+        number += '0'
+    return number
+
+# def print_0(m, n) :
+    # nb_round_str = str(round(m, n))
+    # i = 0
+    # print("x = ", end = '')
+    # while i < len(nb_round_str) and i < n + 2:
+    #     print(nb_round_str[i], end='')
+    #     i = i + 1
+    # while i < len(str(m)) and i < n + 2:
+    #     print('0', end='')
+    #     i = i + 1
+
+def bisection(polynome, a, b, n) :
+    x1 = a
+    x2 = b
+    m = 0
+    last = 15484
+
+    if (x1 > x2) :
+            tempo = x1
+            x1 = x2
+            x2 = tempo
+    while ((x2 - x1) > 10 ** (-1 * n)) :
+        if (x1 > x2) :
+            tempo = x1
+            x1 = x2
+            x2 = tempo
+        last = round(m, n)
+        if (polynome.solution(x2) * polynome.solution(x1) > float(0)) :
+            sys.exit(84)
+        m = (x1 + x2) / 2
+        print("x = %s"%(get_str(m, n, last)))
+        if (polynome.solution(m) * polynome.solution(x1) <= float(0)) :
+            x2 = m
+        else :
+            x1 = m
+
+def newton(polynome, a, n) :
+    last = 0
+    derivate = polynome.derivative()
+    print("x = 0.5")
+    while (round(a, n) != round(last, n)) :
+        last = a
+        if (derivate.solution(a) == float(0)) :
+            sys.exit(84)
+        a = a - polynome.solution(a)/derivate.solution(a)
+        if (round(a, n) != round(last, n)) :
+            print("x = %s"%(get_str(round(a, n), n, round(last, n))))
+
+def secant(polynome, x1, x2, n) :
+    x0 = 0
+    xn = 1
+    xn1 = 15
+    last = 45
+    while (round(xn1, n) != round(last, n)):
+        last = xn
+        if (polynome.solution(xn) == polynome.solution(x0)) :
+            sys.exit(84)
+        xn1 = xn - ((xn - x0)/(polynome.solution(xn) - polynome.solution(x0)) * polynome.solution(xn))
+        x0 = xn
+        xn = xn1
+        # if (round(xn, n) != round(last, n + 1)) :
+        if (round(xn, n + 1) != round(last, n + 1)) :
+            print("x = %s"%(get_str2(round(xn, n), n, round(last, n))))
+        # print("x = %s"%(get_str(round(xn, n), n, round(last, n))))
+        # print_0(xn, n)
+        # print("")
+
+if __name__=='__main__':
+    a = len(sys.argv)
+    if (a == 2 and sys.argv[1] == "-h") :
+        print("USAGE")
+        print("./105torus opt a0 a1 a2 a3 a4 n")
+        print("DESCRIPTION")
+        print("\topt\tmethod option:")
+        print("\t\t1 for the bisection method")
+        print("\t\t2 for Newton’s method")
+        print("\t\t3 for the secant method")
+        print("\ta[0-4]\tcoefficients of the equation")
+        print("\tn\tprecision (the application of the polynomial to the solution should")
+        print("\t\tbe smaller than 10ˆ-n")
+        sys.exit(0)
+    if (a != 8) :
+        sys.exit(84)
+    if (a == 8) :
+        error(sys.argv[1])
+        error2(sys.argv[7])
+        try :
+            float(sys.argv[2])
+            float(sys.argv[3])
+            float(sys.argv[4])
+            float(sys.argv[5])
+            float(sys.argv[6])
+            # float(sys.argv[7])
+        except :
+            print("One or more invalid arguments")
+            sys.exit(84)
+        polynome = Polynom(sys.argv[2], sys.argv[3], sys.argv[4], sys.argv[5], sys.argv[6])
+        if (sys.argv[1] == '1') :
+            bisection(polynome, 0, 1, int(sys.argv[7]))
+        if (sys.argv[1] == '2') :
+            newton(polynome, 0.5, int(sys.argv[7]))
+        if (sys.argv[1] == '3') :
+            secant(polynome, 0, 1, int(sys.argv[7]))
