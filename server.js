@@ -12,7 +12,7 @@ const wss = new zsockets.WebSocketServer(6969, () => {
 wss.OnInternal("connection", c => {
     c.On("exec_script", obj => {
         console.log("Executing python script");
-        str = "python 105torus_2019/105torus.py" + " " +obj;
+        str = "python binaries/105torus" + " " +obj;
         exec(str, (err, stdout, stderr) => {
             if (err)
                 return console.log(err);

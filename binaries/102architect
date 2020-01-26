@@ -1,0 +1,134 @@
+#! /usr/bin/python
+import sys
+import math
+
+def error():
+    print("Missing arguments / option not available")
+    sys.exit (84)
+
+def close() :
+    sys.exit (0)
+
+def mult(tempo, matrix) :
+    result = [[0, 0, 0], [0, 0, 0], [0, 0 ,0]]
+    result[0][0] = tempo[0][0] * matrix[0][0] + tempo[0][1] * matrix[1][0] + tempo[0][2] * matrix[2][0]
+    result[0][1] = tempo[0][0] * matrix[0][1] + tempo[0][1] * matrix[1][1] + tempo[0][2] * matrix[2][1]
+    result[0][2] = tempo[0][0] * matrix[0][2] + tempo[0][1] * matrix[1][2] + tempo[0][2] * matrix[2][2]
+    result[1][0] = tempo[1][0] * matrix[0][0] + tempo[1][1] * matrix[1][0] + tempo[1][2] * matrix[2][0]
+    result[1][1] = tempo[1][0] * matrix[0][1] + tempo[1][1] * matrix[1][1] + tempo[1][2] * matrix[2][1]
+    result[1][2] = tempo[1][0] * matrix[0][2] + tempo[1][1] * matrix[1][2] + tempo[1][2] * matrix[2][2]
+    result[2][0] = tempo[2][0] * matrix[0][0] + tempo[2][1] * matrix[1][0] + tempo[2][2] * matrix[2][0]
+    result[2][1] = tempo[2][0] * matrix[0][1] + tempo[2][1] * matrix[1][1] + tempo[2][2] * matrix[2][1]
+    result[2][2] = tempo[2][0] * matrix[0][2] + tempo[2][1] * matrix[1][2] + tempo[2][2] * matrix[2][2]
+    return(result)
+
+def calcul_translation(argv0, argv1) :
+    matrix = [[1, 0, 0], [0, 1, 0], [0, 0, 1]]
+    matrix[0][2] = float(matrix[0][2]) + float(argv0)
+    matrix[1][2] = float(matrix[1][2]) + float(argv1)
+    return (matrix)
+
+def calcul_scaling(argv0, argv1) :
+    matrix = [[1, 0, 0], [0, 1, 0], [0, 0, 1]]
+    matrix[0][0] = float(matrix[0][0]) * float(argv0)
+    matrix[1][1] = float(matrix[1][1]) * float(argv1)
+    return (matrix)
+
+def calcul_rotation(argv0) :
+    matrix = [[1, 0, 0], [0, 1, 0], [0, 0, 1]]
+    angle = float(argv0) * float(math.pi)
+    angle = float(angle) / float(180)
+    matrix[0][0] = float(matrix[0][0]) * float(math.cos(angle))
+    matrix[0][1] = float(matrix[0][1]) + float(- 1 * math.sin(angle))
+    if (math.sin(angle) == float(math.sin(0))) :
+        matrix[1][0] = 0
+    else :
+        matrix[1][0] = float(matrix[1][0]) + float(1 * math.sin(angle))
+    matrix[1][1] = float(matrix[1][1]) * float(math.cos(angle))
+    return (matrix)
+
+def calcul_reflection(argv0) :
+    matrix = [[1, 0, 0], [0, 1, 0], [0, 0, 1]]
+    angle = float(argv0) * math.pi
+    angle = float(angle) / float(180)
+    matrix[0][0] = float(matrix[0][0]) * float(math.cos(2 * angle))
+    matrix[0][1] = float(matrix[0][1]) + float(math.sin(2 * angle))
+    matrix[1][0] = float(matrix[1][0]) + float(math.sin(2 * angle))
+    if (math.cos(2 * angle) == float(math.cos(math.pi/2))) :
+        matrix[1][1] = 0
+    else :
+        matrix[1][1] = float(matrix[1][1]) * float(-1 * math.cos(2 * angle))
+    return (matrix)
+
+def calcul_position(matrix, position) :
+    final_position = [0, 0, 0]
+    final_position[0] = ((float(matrix[0][0]) * float(position[0])) + (float(matrix[0][1]) * float(position[1])) + (float(matrix[0][2]) * float(position[2])))
+    final_position[1] = (float(matrix[1][0]) * float(position[0]) + float(matrix[1][1]) * float(position[1]) + float(matrix[1][2]) * float(position[2]))
+    final_position[2] = (float(matrix[2][0]) * float(position[0]) + float(matrix[2][1]) * float(position[1]) + float(matrix[2][2]) * float(position[2]))
+    print("%2.2f\t%2.2f\t%2.2f\n%2.2f\t%2.2f\t%2.2f\n%2.2f\t%2.2f\t%2.2f"%(matrix[0][0], matrix[0][1], matrix[0][2], matrix[1][0], matrix[1][1], matrix[1][2], matrix[2][0], matrix[2][1], matrix[2][2]))
+    print("(%2.2f, %2.2f) => (%2.2f, %2.2f)"%(float(position[0]), float(position[1]), final_position[0], final_position[1]))
+
+if __name__=='__main__':
+    a = len(sys.argv)
+    result = [[1, 0, 0], [0, 1, 0], [0, 0, 1]]
+    theorical = 3
+    if (a < 2) :
+        error()
+    if (a == 2) :
+        if sys.argv[1] == "-h" :
+            print("USAGE\n    ./102architect x y transfo1 arg11 [arg12] [transfo2 arg12 [arg22]] ...\n\nDESCRIPTION\n    x   abscissa of the original point\n    y   ordinate of the original point\n\n    transfo arg1 [arg2]\n    -t i j  translation along vector (i, j)\n    -z m n  scaling by factors m (x-axis) and n (y-axis)\n    -r d    rotation centered in O by a d degree angle\n    -s d    reflection over the axis passing through O with an inclination angle of d degrees")
+            close()
+        else :
+            error()
+    if (a < 5) :
+        error()
+    if (a >= 5) :
+        i = 1
+        tempo = 1
+        position = [sys.argv[1], sys.argv[2], 1]
+        while (tempo < a) :
+            if (sys.argv[tempo] != "-t" and sys.argv[tempo] != "-z" and sys.argv[tempo] != "-r" and sys.argv[tempo] != "-s") :
+                try :
+                    float(sys.argv[tempo])
+                except :
+                    error()
+            if (sys.argv[tempo] == "-t" or sys.argv[tempo] == '-z') :
+                theorical += 3
+            if (sys.argv[tempo] == "-r" or sys.argv[tempo] == "-s") :
+                theorical += 2
+            tempo += 1
+        if (theorical != a) :
+            error()
+        while (i < a) :
+            if (sys.argv[i] == "-t") :
+                try :
+                    float(sys.argv[i + 1])
+                    float(sys.argv[i + 2])
+                except :
+                    error()
+                print("Translation along vector (%s, %s)"%(sys.argv[i + 1], sys.argv[i + 2]))
+                result = mult(calcul_translation(sys.argv[i + 1], sys.argv[i + 2]), result)
+            if (sys.argv[i] == "-z") :
+                try :
+                    float(sys.argv[i + 1])
+                    float(sys.argv[i + 2])
+                except :
+                    error()
+                print("Scaling by factors %s and %s"%(sys.argv[i + 1], sys.argv[i + 2]))
+                result = mult(calcul_scaling(sys.argv[i + 1], sys.argv[i + 2]), result)
+            if (sys.argv[i] == "-r") :
+                try :
+                    float(sys.argv[i + 1])
+                except :
+                    error()
+                print("Rotation by a %s degree angle"%(sys.argv[i + 1]))
+                result = mult(calcul_rotation(sys.argv[i + 1]), result)
+            if (sys.argv[i] == "-s") :
+                try :
+                    float(sys.argv[i + 1])
+                except :
+                    error()
+                print("Reflection over an axis with an inclination angle of %s degrees"%(sys.argv[i + 1]))
+                result = mult(calcul_reflection(sys.argv[i + 1]), result)
+            i += 1
+        calcul_position(result, position)
