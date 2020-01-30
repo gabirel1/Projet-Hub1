@@ -9,9 +9,6 @@
         <script src="https://cdn.jsdelivr.net/gh/ZAUB1/zsockets-webclient@master/socket.js"></script>
         <script>
             const wclient = new WebSocketWebClient("localhost", 6969)
-            wclient.On("connected", () => {
-              console.log("test");
-            })
             wclient.On("python_result", (result) => {
                 toggle_text(result);
             })
