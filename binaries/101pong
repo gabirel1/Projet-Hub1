@@ -1,0 +1,58 @@
+#! /usr/bin/#!/usr/bin/python3
+# -*- coding: utf-8 -*-
+import sys
+import math
+
+def calc(x0, y0, z0, x1, y1, z1, n):
+    try :
+        n = int (n)
+        x = (float(x1) - float(x0))
+        y =(float(y1) - float(y0))
+        z = (float(z1) - float(z0))
+    except :
+        print("Invalid arguments")
+        sys.exit (84)
+    if (n < 0) :
+        print("error, time can't be negative")
+        sys.exit (84)
+    print("The velocity vector of the ball is:")
+    print ("(%.2f, %.2f, %.2f)"%(x,y,z))
+    print("At time t + %d, ball coordinates will be:"%(int(n)))
+    x = (float(x) * int (n) + float(x1))
+    y = (float(y) * int (n) + float(y1))
+    z = (float(z) * int (n) + float(z1))
+    print ("(%.2f, %.2f, %.2f)"%(x,y,z))
+    x = float(x) - float(x1)
+    y = float(y) - float(y1)
+    z = float(z) - float(z1)
+    a = math.sqrt(math.pow(float(x),2)+math.pow(float(y),2))
+    test = float(x0) * float(x)
+    if (test < 0) :
+        angle = float(z)/float(a)
+        angle = math.atan(float(angle))
+        if (angle < 0) :
+            angle = float(angle) * -1
+        angle = float(angle) * 180
+        angle = float(angle) / math.pi
+        print("The incidence angle is:\n%.2f degrees"%(angle))
+    else :
+        print("The ball won't reach the paddle.")
+
+def error(a):
+    print("missing arguments")
+    sys.exit (84)
+
+if __name__=='__main__':
+    a = len(sys.argv)
+    if (a == 2) :
+        if sys.argv[1] == "-h" :
+            print("USAGE\n    ./101pong x0 y0 z0 x1 y1 z1 n\n\nDESCRIPTION\n    x0 ball abscissa at time t - 1\n    y0 ball ordinate at time t - 1\n    z0 ball altitude at time t - 1\n    x1 ball abscissa at time t\n    y1 ball ordinate at time t\n    z1 ball altitude at time t\n    n time shift (greater than or equal to zero, integer)")
+        else :
+            error(a)
+
+    if (a != 8 and a != 2) :
+        error(a)
+    if (a == 8) :
+        #incorrect_arguments(sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4], sys.argv[5], sys.argv[6], sys.argv[7])
+        calc(sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4], sys.argv[5], sys.argv[6], sys.argv[7])
+   

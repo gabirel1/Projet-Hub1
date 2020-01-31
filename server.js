@@ -20,8 +20,6 @@ wss.OnInternal("connection", c => {
     c.On("exec_script", obj => {
         console.log("Executing python script");
         console.log(obj);
-        // console.log(binary);
-        // console.log(obj);
         if (is_error(obj))
             str = "binaries/error";
         else
