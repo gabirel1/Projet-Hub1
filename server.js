@@ -19,10 +19,15 @@ function is_error(obj) {
 wss.OnInternal("connection", c => {
     c.On("exec_script", obj => {
         console.log("Executing python script");
+        console.log(obj);
+        // console.log(binary);
+        // console.log(obj);
         if (is_error(obj))
             str = "binaries/error";
         else
-            str = "python binaries/105torus" + " " +obj;
+        console.log("salut");
+            str = "" +obj;
+            console.log(str);
             exec(str, (err, stdout, stderr) => {
                 if (err)
                     return console.log(err);

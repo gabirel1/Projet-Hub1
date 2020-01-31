@@ -12,19 +12,21 @@
             wclient.On("python_result", (result) => {
                 toggle_text(result);
             })
-            const goPython = (hu) => {
+            const goExec = (given) => {
               console.log("test1");
-              return wclient.Emit("exec_script", hu);
+              return wclient.Emit("exec_script", given);
             };
         </script>
         <script>
             function getHU()
             {
-                const hu = document.getElementById("hu").value;
-                const testee = document.getElementById("selection").value;
-                console.log(testee)
-                console.log(hu);
-                console.log(goPython(hu));
+                const command = document.getElementById("command").value;
+                const binary = document.getElementById("selection").value;
+                const given = binary + " " + command;
+                console.log(given);
+                console.log(binary);
+                console.log(command);
+                console.log(goExec(given));
             }
         </script>
         <script>
@@ -62,7 +64,7 @@
         </select>
         <br><br><br><br><br><br><br><br><br><br><br><br><br><br>
         <FORM>
-            <input type="text" hspace="10px" onfocus="this.value='';" name="sethu" id="hu" value="Enter code"/>
+            <input type="text" hspace="10px" onfocus="this.value='';" name="sethu" id="command" value="Enter code"/>
             <input type="button" hspace="10px" id='script' name="scriptbutton" value=" Run Script " onclick="getHU()">
         </FORM>
         <br><br><br><br><br><br><br><br><br><br>
