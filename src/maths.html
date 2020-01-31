@@ -22,11 +22,18 @@
             {
                 const command = document.getElementById("command").value;
                 const binary = document.getElementById("selection").value;
-                const given = binary + " " + command;
-                console.log(given);
-                console.log(binary);
-                console.log(command);
-                console.log(goExec(given));
+                if (document.getElementById("cat").checked == true) {
+                    const if_checked = document.getElementById("cat").value;
+                    const given = binary + " " + command +if_checked;
+                    console.log(given);
+                    console.log(goExec(given));
+                } else {
+                    const given = binary + " " + command;
+                    console.log(given);
+                    console.log(binary);
+                    console.log(command);
+                    console.log(goExec(given));
+                }
             }
         </script>
         <script>
@@ -39,11 +46,10 @@
     </head>
     <body>
         <header>
-            <nav> 
+            <nav>
                 <ul>
                     <li><a href="../index.html">Accueil</a></li> 
-                    <li><a href="test.html">Test</a></li>
-                    <li><a href="companies.html">Ses entreprises</a></li>
+                    <li><a href="maths.html">Maths</a></li>
                 </ul>
             </nav>
         </header>
@@ -62,12 +68,18 @@
             <!-- <option>102architect</option> -->
             <!-- <option>102architect</option> -->
         </select>
-        <br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+        <br><br><br>
         <FORM>
             <input type="text" hspace="10px" onfocus="this.value='';" name="sethu" id="command" value="Enter code"/>
             <input type="button" hspace="10px" id='script' name="scriptbutton" value=" Run Script " onclick="getHU()">
+            <input type="checkbox" id="cat" name="cat -e" value=" | cat -e">
+            <label for="cat">cat -e</label>
+            <input type="checkbox" id="whitespace-mode" value="">
+            <label for="whitespace-mode">show spaces</label>
         </FORM>
-        <br><br><br><br><br><br><br><br><br><br>
+        <br><br><br><br><br><br><br><br>
+        <h1></h1>
+        <br><br>
         <span id="function_return" hspace="10px"></span>
         <script>
         </script>
@@ -77,7 +89,7 @@
             <br>
             <br>
             <br>
-            <a id="copyrights">Copyrights</a>
+            <a id="copyrights">Project done by Rafik Merzouk et Gabriel Knies (Epitech Montpellier 2024)</a>
         </footer>
     </body>
 </html>
