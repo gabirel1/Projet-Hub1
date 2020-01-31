@@ -13,7 +13,7 @@
                 toggle_text(result);
             })
             const goPython = (hu) => {
-              console.log("tes1");
+              console.log("test1");
               return wclient.Emit("exec_script", hu);
             };
         </script>
@@ -44,12 +44,13 @@
             </nav>
         </header>
         <br><br><br><br><br>
-        <select name="binary_selection">
-            <option>101pong</option>
-            <option>102architect</option>
-            <option>103cipher</option>
-            <option>104intersection</option>
-            <option>105torus</option>
+        <select id="selection" name="binary_selection">
+            <option value="">--Please choose an option--</option>
+            <option value="binaries/101pong">101pong</option>
+            <option value="binaries/102architect">102architect</option>
+            <option value="binaries/103cipher">103cipher</option>
+            <option value="binaries/104intersection">104intersection</option>
+            <option value="binaries/105torus">105torus</option>
             <!-- <option>102architect</option> -->
             <!-- <option>102architect</option> -->
             <!-- <option>102architect</option> -->

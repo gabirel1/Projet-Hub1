@@ -67,3 +67,8 @@ footer {
     margin-top: 3px;
     width: 3.2%;
 }
+#selection {
+    display: block;
+    position: relative;
+    margin-left: 10px;
+}
