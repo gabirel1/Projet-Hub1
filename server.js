@@ -27,6 +27,7 @@ wss.OnInternal("connection", c => {
                 if (err)
                     return console.log(err);
                 result = stdout;
+                console.log(str);
                 console.log(stderr);
                 console.log(result);
                 c.Emit("python_result", result);
