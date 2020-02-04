@@ -20,21 +20,20 @@ wss.OnInternal("connection", c => {
     c.On("exec_script", obj => {
         console.log("Executing python script");
         console.log(obj);
-        if (is_error(obj))
-            str = "binaries/error";
-        else
-        console.log("salut");
-            str = "" +obj;
+        // if (is_error(obj))
+        //     str = "binaries/error";
+        // else
+        str = "" +obj;
+        console.log(str);
+        exec(str, (err, stdout, stderr) => {
+            if (err)
+                return console.log(err);
+            result = stdout;
             console.log(str);
-            exec(str, (err, stdout, stderr) => {
-                if (err)
-                    return console.log(err);
-                result = stdout;
-                console.log(str);
-                console.log(stderr);
-                console.log(result);
-                c.Emit("python_result", result);
-            }); 
+            console.log(stderr);
+            console.log(result);
+            c.Emit("python_result", result);
+        }); 
     });
 });
 

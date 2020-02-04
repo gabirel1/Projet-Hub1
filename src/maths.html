@@ -18,6 +18,34 @@
             };
         </script>
         <script>
+        function revstr(str)
+        {
+            return str.split("").reverse().join("");
+        }
+
+        function get_return_value(result)
+        {
+            let i = 0;
+            let j = 0;
+            let string;
+            let final_string;
+            let string2 = "\nreturn value : ";
+
+            while (result[i])
+            {
+                i++;
+            }
+            while (result[i] != ' ')
+            {
+                string[j] = result[i];
+                i+= -1;
+            }
+            string = revstr(string);
+            final_string = string2 + string;
+            console.log(final_string);
+        }
+        </script>
+        <script>
             function getHU()
             {
                 const command = document.getElementById("command").value;
@@ -25,6 +53,17 @@
                 if (document.getElementById("cat").checked == true) {
                     const if_checked = document.getElementById("cat").value;
                     const given = binary + " " + command +if_checked;
+                    console.log(given);
+                    console.log(goExec(given));
+                } else if (document.getElementById("cat").checked == true && document.getElementById("return_value").checked == true) {
+                    const if_checked = document.getElementById("cat").value;
+                    const is_return_value = document.getElementById("return_value").value;
+                    const given = binary + " " + command +if_checked +is_return_value;
+                    console.log(given);
+                    console.log(goExec(given));
+                } else if (document.getElementById("return_value").checked == true && document.getElementById("cat").checked == false) {
+                    const is_return_value = document.getElementById("return_value").value;
+                    const given = binary + " " + command +is_return_value;
                     console.log(given);
                     console.log(goExec(given));
                 } else {
@@ -41,6 +80,13 @@
             {
                 var span = document.getElementById("function_return");
                 span.innerHTML = res;
+            }
+        </script>
+        <script>
+            function toggle_text2(str)
+            {
+                var span = document.getElementById("return_value");
+                span.innerHTML = str;
             }
         </script>
     </head>
@@ -61,7 +107,7 @@
             <option value="binaries/103cipher">103cipher</option>
             <option value="binaries/104intersection">104intersection</option>
             <option value="binaries/105torus">105torus</option>
-            <!-- <option>102architect</option> -->
+            <option value="./binaries/my_ls">My Ls</option>
             <!-- <option>102architect</option> -->
             <!-- <option>102architect</option> -->
             <!-- <option>102architect</option> -->
@@ -74,8 +120,8 @@
             <input type="button" hspace="10px" id='script' name="scriptbutton" value=" Run Script " onclick="getHU()">
             <input type="checkbox" id="cat" name="cat -e" value=" | cat -e">
             <label for="cat">cat -e</label>
-            <input type="checkbox" id="whitespace-mode" value="">
-            <label for="whitespace-mode">show spaces</label>
+            <input type="checkbox" id="return_value" value=" ; echo $?">
+            <label for="return_value">show return value</label>
         </FORM>
         <br><br><br><br><br><br><br><br>
         <h1></h1>
