@@ -72,3 +72,11 @@ footer {
     position: relative;
     margin-left: 10px;
 }
+#function_return {
+    display: block;
+    position: relative;
+    margin-left: 20px;
+}
+#msg {
+    margin-right: 20px;
+}

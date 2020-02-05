@@ -2,9 +2,9 @@
 <html>
     <head>
         <meta charset="utf-8"> 
-        <meta name="Bonus maths" content="Home" />
+        <meta name="project_hub" content="tester" />
         <meta name="viewport" content="width=device-width,initial-scale=1"/>
-        <title>Accueil</title>
+        <title>Tester</title>
         <link rel="stylesheet" href="../css/StyleSheet.css">
         <script src="https://cdn.jsdelivr.net/gh/ZAUB1/zsockets-webclient@master/socket.js"></script>
         <script>
@@ -49,24 +49,33 @@
             function getHU()
             {
                 const command = document.getElementById("command").value;
+                // toggle_text("error");
                 const binary = document.getElementById("selection").value;
-                if (document.getElementById("cat").checked == true) {
+                if (document.getElementById("cat").checked == true && document.getElementById("return_value").checked == false) {
+                    console.log("cat checked");
                     const if_checked = document.getElementById("cat").value;
                     const given = binary + " " + command +if_checked;
                     console.log(given);
                     console.log(goExec(given));
-                } else if (document.getElementById("cat").checked == true && document.getElementById("return_value").checked == true) {
+                    return;
+                } 
+                if (document.getElementById("cat").checked == true && document.getElementById("return_value").checked == true) {
+                    console.log("cat checked, return_value checked");
                     const if_checked = document.getElementById("cat").value;
                     const is_return_value = document.getElementById("return_value").value;
-                    const given = binary + " " + command +if_checked +is_return_value;
+                    const given = binary + " " +command +if_checked +is_return_value;
                     console.log(given);
                     console.log(goExec(given));
+                    return;
                 } else if (document.getElementById("return_value").checked == true && document.getElementById("cat").checked == false) {
+                    console.log("return_value checked, cat not");
                     const is_return_value = document.getElementById("return_value").value;
                     const given = binary + " " + command +is_return_value;
                     console.log(given);
                     console.log(goExec(given));
+                    return;
                 } else {
+                    console.log("else");
                     const given = binary + " " + command;
                     console.log(given);
                     console.log(binary);
@@ -79,6 +88,9 @@
             function toggle_text(res)
             {
                 var span = document.getElementById("function_return");
+                res = res.split('\n').join('<br>');
+                res = res.split('\t').join('<dd>');
+                console.log(res);
                 span.innerHTML = res;
             }
         </script>
@@ -95,7 +107,7 @@
             <nav>
                 <ul>
                     <li><a href="../index.html">Accueil</a></li> 
-                    <li><a href="maths.html">Maths</a></li>
+                    <li><a href="tester.html">Maths</a></li>
                 </ul>
             </nav>
         </header>
@@ -114,19 +126,20 @@
             <!-- <option value="">102architect</option> -->
             <!-- <option value="">102architect</option> -->
         </select>
-        <br><br><br>
+        <br><br>
+        <p align="center" id="msg">Please remember that you CAN'T combine cat -e and show retun value</p>
         <FORM>
             <input type="text" hspace="10px" onfocus="this.value='';" name="sethu" id="command" value="Enter code"/>
             <input type="button" hspace="10px" id='script' name="scriptbutton" value=" Run Script " onclick="getHU()">
             <input type="checkbox" id="cat" name="cat -e" value=" | cat -e">
             <label for="cat">cat -e</label>
-            <input type="checkbox" id="return_value" value=" ; echo -e 'return value :' $?">
+            <input type="checkbox" id="return_value" value=" ; echo -ne '\n\nreturn value :' $?">
             <label for="return_value">show return value</label>
         </FORM>
         <br><br><br><br><br><br><br><br>
         <h1></h1>
         <br><br>
-        <span id="function_return" hspace="10px"></span>
+        <span id="function_return" hspace="100px"></span>
         <script>
         </script>
         <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
@@ -135,7 +148,7 @@
             <br>
             <br>
             <br>
-            <a id="copyrights">Project done by Rafik Merzouk et Gabriel Knies (Epitech Montpellier 2024)</a>
+            <a id="copyrights">Project done by Rafik Merzouk and Gabriel Knies (Epitech Montpellier 2024)</a>
         </footer>
     </body>
 </html>
