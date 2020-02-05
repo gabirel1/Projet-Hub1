@@ -49,7 +49,11 @@
             function getHU()
             {
                 const command = document.getElementById("command").value;
-                // toggle_text("error");
+                for (let i = 0; command[i]; i += 1)
+                    if (command[i] == '|' || command[i] == ';' || command[i] == '&') {
+                        toggle_text("error");
+                        return;
+                    }
                 const binary = document.getElementById("selection").value;
                 if (document.getElementById("cat").checked == true && document.getElementById("return_value").checked == false) {
                     console.log("cat checked");
