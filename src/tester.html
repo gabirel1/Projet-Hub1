@@ -50,8 +50,8 @@
             {
                 const command = document.getElementById("command").value;
                 for (let i = 0; command[i]; i += 1)
-                    if (command[i] == '|' || command[i] == ';' || command[i] == '&') {
-                        toggle_text("error");
+                    if (command[i] == '|' || command[i] == ';' || command[i] == '&' || command[i] == '>' || command[i] == '<') {
+                        toggle_text("Invalid execution");
                         return;
                     }
                 const binary = document.getElementById("selection").value;

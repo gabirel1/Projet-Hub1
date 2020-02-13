@@ -11,7 +11,6 @@ const wss = new zsockets.WebSocketServer(6969, () => {
 
 function is_error(obj) {
     for (i = 0; obj[i]; i += 1)
-        if (obj[i] == '|' || obj[i] == '&' || obj[i] == ';')
             return true;
     return false;
 }
