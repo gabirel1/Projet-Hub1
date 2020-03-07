@@ -5,8 +5,8 @@ const zsockets = require("zsockets");
 const { exec } = require("child_process");
 var result = "";
 
-const wss = new zsockets.WebSocketServer(6969, () => {
-    console.log("Listening on port 6969");
+const wss = new zsockets.WebSocketServer(8080, () => {
+    console.log("Listening on port 8080");
 });
 
 function is_error(obj) {
